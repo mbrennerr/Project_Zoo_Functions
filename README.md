@@ -62,7 +62,7 @@ Você implementará várias funções para atender aos requisitos propostos e ga
 Este repositório contém um _template_ de uma aplicação **NodeJS** (observe a existência do arquivo _package.json_).
 Após clonar o projeto e instalar as dependências, você não precisará realizar nenhuma configuração adicional.
 Todos os arquivos estritamente necessários para finalizar o projeto já estão criados, **não** sendo necessária a criação de outros arquivos.
-Você deverá completar as funções e testes unitários de forma a satisfazer os requisitos listados na próxima seção.
+Você deverá completar as funções de forma a satisfazer os requisitos listados na próxima seção.
 
 Na pasta raíz do projeto, temos a pasta `src` e a pasta `tests`. A pasta `src` é composta pelo arquivo `zoo.js`, que contém as funções a serem implementadas, e o arquivo `data.js`, que armazena os dados que serão utilizados. Já a pasta `tests`, contém os testes unitários correspondentes a cada função do arquivo `zoo.js`.
 
@@ -82,7 +82,7 @@ Você só deve alterar os arquivos indicados nos requisitos. **Os arquivos que n
 ### ANTES DE COMEÇAR A DESENVOLVER
 
 1. Clone o repositório
-  * `git clone https://github.com/tryber/sd-013-a-project-zoo-functions.git`.
+  * `git clone git@github.com:tryber/sd-013-a-project-zoo-functions.git`.
   * Entre na pasta do repositório que você acabou de clonar:
     * `cd sd-013-a-project-zoo-functions`
 
