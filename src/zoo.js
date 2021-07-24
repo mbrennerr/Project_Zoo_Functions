@@ -4,7 +4,7 @@ const { species, employees, prices } = data;
 
 const getSpeciesByIds = (...ids) => species.filter(
   (specie) => ids.includes(specie.id)
-);
+)
 
 function getAnimalsOlderThan(animal, age) {
   const animalFound = species.find((specie) => specie.name === animal);
