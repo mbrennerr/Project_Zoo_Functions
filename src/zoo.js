@@ -60,7 +60,6 @@ function increasePrices(percentage) {
   prices.Adult = Math.round((prices.Adult * (operador)) * 100) / 100;
   prices.Senior = Math.round((prices.Senior * (operador)) * 100) / 100;
   prices.Child = Math.round((prices.Child * (operador)) * 100) / 100;
-
 }
 
 function getEmployeeCoverage(idOrName) {
