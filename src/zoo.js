@@ -68,8 +68,41 @@ function increasePrices(percentage) {
   prices.Child = Math.round((prices.Child * (operador)) * 100) / 100;
 }
 
-function getEmployeeCoverage(idOrName) {
+// Feita para a função getEmployeeCoverage
+const setObject = (employee) => {
+  const object = {};
+  const fullName = `${employee.firstName} ${employee.lastName}`;
+  object[fullName] = [];
+  employee.responsibleFor.forEach((res) => {
+    const { name } = data.species.find(({ id }) => id === res);
+    object[fullName].push(name);
+  });
+  return object;
+};
 
+// Feita para a função getEmployeeCoverage
+const findById = (id) => {
+  const find = data.employees.find((employee) => employee.id === id);
+  return setObject(find);
+};
+
+// Feita para a função getEmployeeCoverage
+const findByName = (name) => {
+  const find = data.employees.find(({ firstName, lastName }) => firstName === name
+    || lastName === name);
+  return setObject(find);
+};
+
+function getEmployeeCoverage(idOrName) {
+  if (!idOrName) {
+    const object = {};
+    data.employees.forEach((employee) => {
+      Object.assign(object, setObject(employee));
+    });
+    return object;
+  }
+  if (idOrName.length > 25) return findById(idOrName);
+  return findByName(idOrName);
 }
 
 module.exports = {
