@@ -68,8 +68,13 @@ function getSchedule(dayName) {
   return dias.reduce((acc, v) => ({ [acc]: v }));
 }
 
-function getOldestFromFirstSpecies(id) {
-
+function getOldestFromFirstSpecies(identidade) {
+  const employee = employees.find(({ id }) => id === identidade);
+  const animalsId = employee.responsibleFor[0];
+  const findAnimals = species.find(({ id }) => id === animalsId);
+  const maisVelho = findAnimals.residents
+    .reduce((acc, animal) => (animal.age > acc.age ? animal : acc));
+  return Object.values(maisVelho);
 }
 
 function increasePrices(percentage) {
