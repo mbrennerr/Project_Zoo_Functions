@@ -1,6 +1,6 @@
 const data = require('./data');
 
-const { species, employees, prices } = data;
+const { species, employees, hours, prices } = data;
 
 const getSpeciesByIds = (...ids) => species.filter(
   (specie) => ids.includes(specie.id),
@@ -49,16 +49,27 @@ function getAnimalMap(options) {
 }
 
 function getSchedule(dayName) {
-
+  const cronograma = {};
+  const keyHours = Object.keys(hours);
+  const valueHours = Object.values(hours);
+  const openHour = valueHours.map((hour) => hour.open);
+  const closeHour = valueHours.map((hour) => hour.close);
+  keyHours.forEach((element, i) => {
+    if (openHour[i] === 0) {
+      cronograma[element] = 'CLOSED';
+    } else {
+      cronograma[element] = `Open from ${openHour[i]}am until ${closeHour[i] - 12}pm`;
+    } return cronograma;
+  });
+  if (!dayName) {
+    return cronograma;
+  }
+  const dias = Object.entries(cronograma).find((day) => day.includes(dayName));
+  return dias.reduce((acc, v) => ({ [acc]: v }));
 }
 
-function getOldestFromFirstSpecies(identidade) {
-  const employee = employees.find(({ id }) => id === identidade);
-  const animalsId = employee.responsibleFor[0];
-  const findAnimals = species.find(({ id }) => id === animalsId);
-  const maisVelho = findAnimals.residents
-    .reduce((acc, animal) => (animal.age > acc.age ? animal : acc));
-  return Object.values(maisVelho);
+function getOldestFromFirstSpecies(id) {
+
 }
 
 function increasePrices(percentage) {
@@ -68,41 +79,27 @@ function increasePrices(percentage) {
   prices.Child = Math.round((prices.Child * (operador)) * 100) / 100;
 }
 
-// Feita para a função getEmployeeCoverage
-const setObject = (employee) => {
-  const object = {};
-  const fullName = `${employee.firstName} ${employee.lastName}`;
-  object[fullName] = [];
-  employee.responsibleFor.forEach((res) => {
-    const { name } = data.species.find(({ id }) => id === res);
-    object[fullName].push(name);
-  });
-  return object;
+const animaisControlados = (empregado) =>
+  empregado.responsibleFor
+    .map((idDoAnimal) => species
+      .find((especie) => especie.id === idDoAnimal).name);
+
+const animaisPorEmpregado = (funcionarios) => funcionarios.reduce((acc, empregado) => {
+  acc[`${empregado.firstName} ${empregado.lastName}`] = animaisControlados(empregado);
+  return acc;
+}, {});
+
+const pegaEmpregado = (infoEmpregado) => {
+  const empregadoFiltrado = employees.find((empregado) =>
+    infoEmpregado === empregado.id
+    || infoEmpregado === empregado.firstName
+    || infoEmpregado === empregado.lastName);
+  return animaisPorEmpregado([empregadoFiltrado]);
 };
 
-// Feita para a função getEmployeeCoverage
-const findById = (id) => {
-  const find = data.employees.find((employee) => employee.id === id);
-  return setObject(find);
-};
-
-// Feita para a função getEmployeeCoverage
-const findByName = (name) => {
-  const find = data.employees.find(({ firstName, lastName }) => firstName === name
-    || lastName === name);
-  return setObject(find);
-};
-
-function getEmployeeCoverage(idOrName) {
-  if (!idOrName) {
-    const object = {};
-    data.employees.forEach((employee) => {
-      Object.assign(object, setObject(employee));
-    });
-    return object;
-  }
-  if (idOrName.length > 25) return findById(idOrName);
-  return findByName(idOrName);
+function getEmployeeCoverage(idFirstLastName) {
+  if (!idFirstLastName) return animaisPorEmpregado(employees);
+  if (idFirstLastName) return pegaEmpregado(idFirstLastName);
 }
 
 module.exports = {
